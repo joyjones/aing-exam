@@ -1,0 +1,9 @@
+backend/web/assets
+backend/runtime
+frontend/web/assets
+frontend/runtime
+logs/
+*.log
+app-wx/lib/Swiper-3.4.2
+access_token
+jsapi_ticket

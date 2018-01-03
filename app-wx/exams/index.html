@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>AING爱音趣测</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css?_dc=ufml29">
+    <link rel="stylesheet" type="text/css" href="../lib/swiper/css/swiper.min.css">
+    <script src="../lib/jquery/jquery-2.1.0.min.js"></script>
+    <script src="../lib/jweixin-1.0.0.js"></script>
+    <script src="js/weixin.js?_dc=abzkd7d"></script>
+    <script src="../lib/vue.js"></script>
+    <script src="js/index.js?_dc=aezhx12"></script>
+    <script src="../lib/swiper/js/swiper.min.js"></script>
+</head>
+<body>
+    <section id="home" v-if="visible">
+        <!-- <img class="banner" src="img/banner.jpg"> -->
+        <div class="swiper-container" :style="{height: bannerHeight+'px'}">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="bn in banners">
+                    <img v-bind:src="configs.qnUrl+bn.imgurl+configs.thumbTail.banner" v-on:click="clickBanner(bn.linkurl)">
+                    <div class="banner-title">{{bn.title}}</div>
+                </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+        <div class="tabbar">
+            <div class="tabitem" v-bind:class="{active: tabIndex==0}" v-on:click="clickTab(0)">
+                <span>最新</span>
+                <img src="img/new.png" width="15">
+            </div>
+            <div class="tabitem" v-bind:class="{active: tabIndex==1}" v-on:click="clickTab(1)">
+                <span>最火</span>
+                <img src="img/hot.png" width="15">
+            </div>
+        </div>
+        <div class="list">
+            <div class="list-item" v-for="prj in projects" v-on:click="clickListItem(prj)" v-if="configs.testMode || prj.status==2">
+                <img class="icon" v-bind:src="configs.qnUrl+prj.logo+configs.thumbTail.projLogo" alt="">
+                <div class="name">{{prj.name}}</div>
+                <div class="mid">
+                    <div class="hot">{{prj.playerCount}}人已测过</div>
+                    <img class="gotest" src="img/quce_btn.png">
+                </div>
+                <div class="desc">{{prj.desc}}</div>
+            </div>
+        </div>
+    </section>
+    <section id="chat" v-if="visible">
+        <div class="chatarea">
+            <div v-for="item in items">
+               <div class="xb_conversation_item">
+                    <div class="xb_conv_wrap_left" v-if="item.type==1">
+                        <img class="xb_avatar_left" :src="getHeadImageQ()">
+                        <div class="xb_tri_left"></div>
+                        <div class="xb_tri_left1"></div>
+                        <img class="xb_conv_left" v-if="item.img" :src="configs.qnUrl+item.img+configs.thumbTail.questOption">
+                        <div class="xb_conv_left" v-if="item.text">
+                            {{item.text}}
+                        </div>
+                    </div>
+                    <div class="xb_conv_wrap_right" v-if="item.type==2">
+                        <img class="xb_avatar_right" :src="getHeadImageA()">
+                        <div class="xb_tri_right"></div>
+                        <div class="xb_tri_right1"></div>
+                        <div class="xb_conv_right">{{item.text}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="optbar">
+            <div class="start" v-if="starting" v-on:click="start">开始测试</div>
+            <div v-for="opt in options" v-if="!starting" class="option-box" :style="{width: optionBtnWidth}">
+                <div class="option" v-on:click="clickOption(opt)">
+                    {{opt.mark}}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="evaluation" v-if="visible">
+        <div class="banner" :style="{height: bannerHeight+'px', 'background-image': 'url(' + configs.qnUrl + image + ')'}">
+            <div class="bg"></div>
+            <div class="texts">
+                <div class="caption">{{caption}}</div>
+                <div class="score" v-if="showScore">{{score}}分</div>
+                <div class="brief" :style="{'margin-top': (showScore ? '0px' : '1.4em')}">
+                    <div v-for="b in briefs">{{b}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="desc">{{desc}}</div>
+        <div class="activity">
+            <img class="qrcode" :src="configs.qnUrl+qrcodeImg">
+            <!-- <div class="qrcode-text">爱音十年有奖活动，参与即有机会领取爱音纯银纪念币！</div> -->
+        </div>
+        <div class="optbar">
+            <div class="btn tohome" v-on:click="clickHome">首页选题</div>
+            <div class="btn retry" v-on:click="clickRetry">再测一遍</div>
+            <div class="btn share" v-on:click="clickShare">分享答案</div>
+        </div>
+        <img src="img/share.png" class="sharetip" v-if="shareTipVisible" v-on:click="clickShareTip">
+    </section>
+</body>
+</html>
